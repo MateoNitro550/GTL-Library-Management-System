@@ -8,11 +8,10 @@
 <body>
   <div class="top-bar">
     <!-- Logo -->
-    <a href="/dashboard"><img id="logo" src="{{ url_for('static', filename='img/logo-full.svg') }}" alt="Logo"></a>
+    <a href="/dashboard"><img id="logo" src="{{ url_for('static', filename='img/logo-full.png') }}" alt="Logo"></a>
 
     <!-- Top Right Buttons -->
     <div id="topRightButtons" class="button-container">
-
       {% if is_admin %}
         <!-- Add Device Button -->
         <button id="addDeviceButton" class="top-right-button"><strong>ADD DEVICE</strong></button>
@@ -23,17 +22,17 @@
         <span class="separator"></span>
 
         <!-- Manage Users -->
-        <a href="/manage-users" id="manageUsersButton" class="top-right-button"><strong>MANAGE USERS</strong></a>
+        <a id="manageUsersButton" class="top-right-button"><strong>MANAGE USERS</strong></a>
         <span class="separator"></span>
       {% endif %}
-      
+
       <form action="{{ url_for('main.download_csv', category=category) }}" method="get">
         <button type="submit" id="reportButton" class="top-right-button"><strong>REPORT</strong></button>
         <span class="separator"></span>
       </form>
 
       <!-- Search Bar -->
-      <input type="text" id="searchInput" class="search-bar" placeholder="Search by Device Name, SNID, Tag, Model, User, IP Addres, or Mobile Number">
+      <input type="text" id="searchInput" class="search-bar" placeholder="Search by Device Name, SNID, Tag, Model, User, IP Address, or Mobile Number">
       <img id="searchIcon" src="{{ url_for('static', filename='img/icon-search-blue.svg') }}" alt="Search">
       <span class="separator"></span>
 
@@ -61,7 +60,6 @@
       <form id="editDeviceForm">
         <button type="submit" id="saveChangesButton">Save Changes</button>
         <button type="button" id="deleteDeviceButton">Delete Device</button>
-        <button type="button" id="moveToStockButton">Move to Stock</button>
       </form>
     </div>
   </div>
@@ -86,7 +84,7 @@
   <table>
     <thead>
       <tr>
-        {% for column in columns[1:] %}
+        {% for column in columns %}
           <th>{{ column_mapping.get(column, column) }}</th>
         {% endfor %}
       </tr>
@@ -94,10 +92,8 @@
     <tbody>
       {% for device in devices %}
         <tr data-device-id="{{ device[0] }}">
-          {% for value, column in zip(device[1:], columns[1:]) %}
-            <td {% if column == 'status' %}class="status-cell {{ value|lower|replace(' ', '-') }}"{% endif %}>
-              {{ value }}
-            </td>
+          {% for value in device %}
+            <td>{{ value }}</td>
           {% endfor %}
         </tr>
       {% endfor %}

@@ -1,41 +1,43 @@
 from .db import execute_query
 
 column_mapping = {
-    'title': 'TITLE',
-    'author': 'AUTHOR',
-    'subject_area': 'SUBJECT AREA',
-    'edition': 'EDITION',
-    'language': 'LANGUAGE',
-    'binding_type': 'BINDING TYPE',
-    'number_of_copies': 'NUMBER OF COPIES',
-    'isbn': 'ISBN',
-    'lending_status': 'LENDING STATUS',
-    'availability_status': 'AVAILABILITY STATUS',
-    'transaction_id': 'TRANSACTION ID',
-    'transaction_type': 'TRANSACTION TYPE',
-    'copy_id': 'COPY ID',
-    'borrow_date': 'BORROW DATE',
-    'return_date': 'RETURN DATE',
-    'member_id': 'MEMBER ID',
-    'employee_id': 'EMPLOYEE ID',
-    'role': 'ROLE',
-    'date_card_issued': 'DATE CARD ISSUED',
-    'expiry_date': 'EXPIRY DATE',
-    'status': 'STATUS',
-    'max_books_allowed': 'MAX BOOKS ALLOWED',
-    'borrow_period': 'BORROW PERIOD',
-    'grace_period': 'GRACE PERIOD',
-    'ssn': 'SSN',
-    'address': 'ADDRESS',
-    'phone_number': 'PHONE NUMBER',
-    'applicant': 'Applicant',
     'book': 'Book',
-    'book_copy': 'Book copy',
-    'borrowing_activity': 'Borrowing activity',
-    'librarian': 'Librarian',
-    'member': 'Member',
+    'book_loan': 'Book Loan',
+    'library_member': 'Library Member',
     'person': 'Person',
-    'professor': 'Professor'
+    'subject_area': 'Subject Area',
+    'volume': 'Volume',
+
+    # Columns from 'person'
+    'ssn': 'SSN',
+    'first_name': 'FIRST NAME',
+    'last_name': 'LAST NAME',
+    'phone_number': 'PHONE NUMBER',
+    'mailing_address': 'MAILING ADDRESS',
+
+    # Columns from 'library_member'
+    'member_id': 'MEMBER ID',
+    'membership_expires_date': 'MEMBERSHIP EXPIRES DATE',
+    'current_books_checked_out': 'CURRENT BOOKS CHECKED OUT',
+
+    # Columns from 'subject_area'
+    'subject_name': 'SUBJECT NAME',
+    'subject_description': 'SUBJECT DESCRIPTION',
+
+    # Columns from 'book'
+    'isbn': 'ISBN',
+    'title': 'TITLE',
+    'edition': 'EDITION',
+    'description': 'DESCRIPTION',
+
+    # Columns from 'volume'
+    'barcode_number': 'BARCODE NUMBER',
+
+    # Columns from 'book_loan'
+    'loan_id': 'LOAN ID',
+    'date_borrowed': 'DATE BORROWED',
+    'due_date': 'DUE DATE',
+    'date_returned': 'DATE RETURNED'
 }
 
 def get_all_categories():

@@ -8,7 +8,7 @@
 <body>
   <div class="top-bar">
     <!-- Logo -->
-    <a href="/dashboard"><img id="logo" src="{{ url_for('static', filename='img/logo-full.svg') }}" alt="Logo"></a>
+    <a href="/dashboard"><img id="logo" src="{{ url_for('static', filename='img/logo-full.png') }}" alt="Logo"></a>
 
     <!-- Top Right Buttons -->
     <div id="topRightButtons" class="button-container">
@@ -20,7 +20,7 @@
 
       {% if is_admin %}
         <!-- Manage Users -->
-        <a href="/manage-users" id="manageUsersButton" class="top-right-button"><strong>MANAGE USERS</strong></a>
+        <a id="manageUsersButton" class="top-right-button"><strong>MANAGE USERS</strong></a>
         <span class="separator"></span>
       {% endif %}
 

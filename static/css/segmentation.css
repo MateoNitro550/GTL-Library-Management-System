@@ -30,12 +30,6 @@ body {
   width: 25px;
 }
 
-#filterIcon {
-  cursor: pointer;
-  height: 25px;
-  width: 25px;
-}
-
 #logoutIcon {
   cursor: pointer;
   height: 40px;
@@ -45,12 +39,13 @@ body {
 /* Add Device Button Styles */
 #addDeviceButton {
   background-color: #FFFFFF;
-  border: 1px solid #FFFFFF; 
-  color: #007DB3;
+  border: 1px solid #FFFFFF;
+  color: #C7B471;
   cursor: pointer;
   font-size: 20px;
   height: 100px;
   padding: 0px 10px;
+  text-decoration: none;
 }
 
 #addDeviceButton:hover {
@@ -60,12 +55,13 @@ body {
 /* Edit Device Button Styles */
 #editDeviceButton {
   background-color: #FFFFFF;
-  border: 1px solid #FFFFFF; 
-  color: #007DB3;
+  border: 1px solid #FFFFFF;
+  color: #C7B471;
   cursor: pointer;
   font-size: 20px;
   height: 100px;
   padding: 0px 10px;
+  text-decoration: none;
 }
 
 #editDeviceButton:hover {
@@ -75,8 +71,8 @@ body {
 /* Manage Users Button Styles */
 #manageUsersButton {
   background-color: #FFFFFF;
-  border: 1px solid #FFFFFF; 
-  color: #007DB3;
+  border: 1px solid #FFFFFF;
+  color: #C7B471;
   cursor: pointer;
   font-size: 20px;
   padding: 0px 10px;
@@ -90,12 +86,13 @@ body {
 /* Report Button Styles */
 #reportButton {
   background-color: #FFFFFF;
-  border: 1px solid #FFFFFF; 
+  border: 1px solid #FFFFFF;
   color: #C7B471;
   cursor: pointer;
   font-size: 20px;
   height: 100px;
   padding: 0px 10px;
+  text-decoration: none;
 }
 
 #reportButton:hover {
@@ -215,28 +212,6 @@ table tbody tr:hover {
 th, td {
   border: 1px solid black;
   padding: 5px;
-}
-
-/* Status Colors */
-.status-cell {
-  font-weight: bold;
-}
-
-.active {
-  color: #008000;
-}
-
-.broken {
-  color: #FF0000;
-}
-
-.needs-repair {
-  color: #FFBF00;
-}
-
-/* Default color for other statuses */
-.status-cell:not(.active):not(.broken):not(.needs-repair) {
-  color: #808080;
 }
 
 /* Modal Styles */

@@ -3,25 +3,27 @@ const addDeviceButton = document.getElementById("addDeviceButton");
 const addDevicePopup = document.getElementById("addDevicePopup");
 const closeAddDevicePopup = document.getElementById("closeAddDevicePopup");
 
-const column_mapping = {
-    'application_name': 'Application Name',
-    'assigned_to': 'Assigned To',
-    'category': 'Category',
-    'comments': 'Comments',
-    'company': 'Company',
-    'department': 'Department',
-    'expiration_date': 'Expiration Date',
-    'ip_address': 'IP Address',
-    'key_value': 'Key Value',
-    'mobile_number': 'Mobile Number',
-    'model': 'Model',
-    'name': 'Device Name',
-    'purchase_date': 'Purchase Date',
-    'snid': 'SNID',
-    'status': 'Status',
-    'tag': 'Tag',
-    'user': 'User'
-};
+  const column_mapping = {
+    'ssn': 'SSN',
+    'first_name': 'First Name',
+    'last_name': 'Last Name',
+    'phone_number': 'Phone Number',
+    'mailing_address': 'Mailing Address',
+    'member_id': 'Member ID',
+    'membership_expires_date': 'Membership Expires Date',
+    'current_books_checked_out': 'Current Books Checked Out',
+    'subject_name': 'Subject Name',
+    'subject_description': 'Subject Description',
+    'isbn': 'ISBN',
+    'title': 'Title',
+    'edition': 'Edition',
+    'description': 'Description',
+    'barcode_number': 'Barcode Number',
+    'loan_id': 'Loan ID',
+    'date_borrowed': 'Date Borrowed',
+    'due_date': 'Due Date',
+    'date_returned': 'Date Returned'
+  };
 
 addDeviceButton.addEventListener("click", () => {
     const currentCategory = window.location.pathname.split('/').pop();
@@ -30,10 +32,6 @@ addDeviceButton.addEventListener("click", () => {
         .then(response => response.json())
         .then(data => {
             const formFields = data.columns.map(column => {
-                if (column === data.columns[0]) {
-                    return '';
-                }
-
                 return `
                     <label for="${column}">${column_mapping[column] || column}:</label>
                     <input type="text" id="${column}" name="${column}" required>

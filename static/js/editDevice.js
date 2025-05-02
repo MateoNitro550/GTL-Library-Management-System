@@ -1,8 +1,6 @@
-// JavaScript to handle the edit device function
 document.addEventListener('DOMContentLoaded', function () {
   const editDeviceButton = document.getElementById('editDeviceButton');
   const deleteDeviceButton = document.getElementById('deleteDeviceButton');
-  const moveToStockButton = document.getElementById('moveToStockButton');
   const saveChangesButton = document.getElementById('saveChangesButton');
   const rows = document.querySelectorAll('table tbody tr');
   const devicePopup = document.getElementById('deviceInfoPopup');
@@ -11,18 +9,25 @@ document.addEventListener('DOMContentLoaded', function () {
   let selectedRow = null;
 
   const column_mapping = {
-    'name': 'Device Name',
-    'snid': 'SNID',
-    'tag': 'Tag',
-    'model': 'Model',
-    'department': 'Department',
-    'user': 'User',
-    'assigned_to': 'Assigned To',
-    'ip_address': 'IP Address',
-    'mobile_number': 'Mobile Number',
-    'category': 'Category',
-    'status': 'Status',
-    'comments': 'Comments'
+    'ssn': 'SSN',
+    'first_name': 'First Name',
+    'last_name': 'Last Name',
+    'phone_number': 'Phone Number',
+    'mailing_address': 'Mailing Address',
+    'member_id': 'Member ID',
+    'membership_expires_date': 'Membership Expires Date',
+    'current_books_checked_out': 'Current Books Checked Out',
+    'subject_name': 'Subject Name',
+    'subject_description': 'Subject Description',
+    'isbn': 'ISBN',
+    'title': 'Title',
+    'edition': 'Edition',
+    'description': 'Description',
+    'barcode_number': 'Barcode Number',
+    'loan_id': 'Loan ID',
+    'date_borrowed': 'Date Borrowed',
+    'due_date': 'Due Date',
+    'date_returned': 'Date Returned'
   };
 
   editDeviceButton.addEventListener('click', () => {
@@ -46,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
   rows.forEach((row) => {
     row.addEventListener('click', () => {
       if (editModeActive) {
-
         const deviceId = row.getAttribute('data-device-id');
 
         const currentCategory = window.location.pathname.split('/').pop();
@@ -54,12 +58,9 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(`/get_columns/${currentCategory}`)
           .then(response => response.json())
           .then(data => {
-
             const deviceInfo = Array.from(row.querySelectorAll('td')).map(td => td.textContent.trim());
 
-            const hasSNIDColumn = data.columns.includes('snid');
-
-            const formFields = data.columns.slice(1).map((column, index) => {
+            const formFields = data.columns.map((column, index) => {
               const columnName = column_mapping[column] || column;
               const columnValue = deviceInfo[index];
               return `
@@ -72,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const buttonsHtml = `
               <button type="submit" id="saveChangesButton">Save Changes</button>
               <button type="button" id="deleteDeviceButton">Delete Device</button>
-              <button type="button" id="moveToStockButton">Move to Stock</button>
             `;
 
             document.getElementById("editDeviceForm").innerHTML = formFields + buttonsHtml;
@@ -96,10 +96,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const columns = document.getElementById("editDeviceForm").querySelectorAll('input[type="text"]');
     columns.forEach(column => {
       const columnName = column.getAttribute('name');
-
       const originalColumnName = Object.keys(column_mapping).find(key => column_mapping[key] === columnName);
       updatedDevice[originalColumnName || columnName] = column.value;
-
     });
 
     fetch('/update_device', {
@@ -132,16 +130,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const category = window.location.pathname.split('/').pop();
         deleteDevice(deviceId, category);
       }
-    } else if (target.matches('#moveToStockButton')) {
-      const confirmMoveToStock = confirm('Are you sure you want to move this device to stock?');
-      if (confirmMoveToStock) {
-        const deviceId = selectedRow.getAttribute('data-device-id');
-        const category = window.location.pathname.split('/').pop();
-        const deviceInfo = Array.from(selectedRow.querySelectorAll('td')).map(td => td.textContent.trim());
-
-        moveToStock(deviceInfo);
-        deleteDevice(deviceId, category);
-      }
     }
   });
 
@@ -168,43 +156,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     })
     .catch(error => console.error('Error:', error));
-  }
-
-  function moveToStock(deviceInfo) {
-      const dataToMove = {
-          deviceInfo: {},
-      };
-
-      const currentCategory = window.location.pathname.split('/').pop();
-      fetch(`/get_columns/${currentCategory}`)
-          .then(response => response.json())
-          .then(data => {
-              const columns = data.columns;
-
-              columns.slice(1).forEach((column, index) => {
-                  const columnName = column_mapping[column] || column;
-                  dataToMove.deviceInfo[columnName] = deviceInfo[index];
-              });
-
-              fetch('/move_to_stock', {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(dataToMove),
-              })
-              .then(response => response.json())
-              .then(data => {
-                  if (data.success) {
-                      location.reload();
-                  } else {
-                      console.error(data.error);
-                      alert('Failed to move the device to stock. Please try again.');
-                  }
-              })
-              .catch(error => console.error('Error:', error));
-          })
-          .catch(error => console.error('Error fetching data:', error));
   }
 
   closeDeviceInfoPopup.addEventListener('click', () => {

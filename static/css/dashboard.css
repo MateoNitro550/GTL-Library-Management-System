@@ -33,7 +33,7 @@ body {
 /* Report Button Styles */
 #reportButton {
   background-color: #FFFFFF;
-  border: 1px solid #FFFFFF; 
+  border: 1px solid #FFFFFF;
   color: #007DB3;
   cursor: pointer;
   font-size: 20px;
@@ -48,7 +48,7 @@ body {
 /* Manage Users Button Styles */
 #manageUsersButton {
   background-color: #FFFFFF;
-  border: 1px solid #FFFFFF; 
+  border: 1px solid #FFFFFF;
   color: #C7B471;
   cursor: pointer;
   font-size: 20px;

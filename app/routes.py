@@ -23,11 +23,13 @@ def dashboard():
     else:
         return render_template('dashboard.html', categories=categories, column_mapping=column_mapping, total_count=total_count, is_admin=False)
 
+
 @main_routes.route('/get_columns/<category>')
 def get_columns_endpoint(category):
     columns, _ = get_category_data(category)
     return jsonify({'columns': columns})
     return columns, devices
+
 
 @main_routes.route('/get_total_count_data')
 def get_total_count_data():
@@ -46,11 +48,6 @@ def get_total_count_data():
     labels_mapped, labels_original, counts = zip(*table_counts)
 
     return jsonify({'labels_mapped': labels_mapped, 'labels_original': labels_original, 'values': counts})
-
-
-@main_routes.route('/manage-users')
-def manageUsers():
-    return render_template('manageUsers.html')
 
 
 @main_routes.route('/segmentation/<category>')
@@ -78,7 +75,7 @@ def add_device():
 
         columns, _ = get_category_data(currentCategory)
 
-        valid_columns = columns[1:]
+        valid_columns = columns
 
         values = [request.form.get(column) for column in valid_columns]
 
@@ -87,7 +84,7 @@ def add_device():
         insert = execute_query(insert_query, values, operation="insert")
 
         if insert:
-            return redirect(url_for('segmentation', category=currentCategory))
+            return redirect(url_for('main.segmentation', category=currentCategory))
         else:
             return "Failed to add the device. Please try again."
 
@@ -99,23 +96,57 @@ def update_device():
     try:
         data = request.get_json()
 
-        device_id = data.get('id')
         category = data.get('category')
+        primary_key = data.get('id')
 
-        updated_data = {key: data.get(key) for key in data.keys() - {'id', 'category'}}
+        # Ensure category and identifier are provided
+        if not category or not primary_key:
+            return jsonify({'success': False, 'error': 'Category and primary key are required'})
 
-        set_clause = ', '.join([f"{key} = %s" for key in updated_data.keys()])
+        updated_data = {key: data.get(key) for key in data.keys() if key not in {'id', 'category'}}
 
-        update_query = f"UPDATE {category} SET {set_clause} WHERE id = %s"
+        if not updated_data:
+            return jsonify({'success': False, 'error': 'No fields to update'})
 
-        update_data = list(updated_data.values()) + [device_id]
+        if category == 'person':
+            set_clause = ', '.join([f"{key} = %s" for key in updated_data.keys()])
+            update_query = f"UPDATE person SET {set_clause} WHERE ssn = %s"
+            update_data = list(updated_data.values()) + [primary_key]
+
+        elif category == 'library_member':
+            set_clause = ', '.join([f"{key} = %s" for key in updated_data.keys()])
+            update_query = f"UPDATE library_member SET {set_clause} WHERE member_id = %s"
+            update_data = list(updated_data.values()) + [primary_key]
+
+        elif category == 'subject_area':
+            set_clause = ', '.join([f"{key} = %s" for key in updated_data.keys()])
+            update_query = f"UPDATE subject_area SET {set_clause} WHERE subject_name = %s"
+            update_data = list(updated_data.values()) + [primary_key]
+
+        elif category == 'book':
+            set_clause = ', '.join([f"{key} = %s" for key in updated_data.keys()])
+            update_query = f"UPDATE book SET {set_clause} WHERE isbn = %s"
+            update_data = list(updated_data.values()) + [primary_key]
+
+        elif category == 'volume':
+            set_clause = ', '.join([f"{key} = %s" for key in updated_data.keys()])
+            update_query = f"UPDATE volume SET {set_clause} WHERE barcode_number = %s"
+            update_data = list(updated_data.values()) + [primary_key]
+
+        elif category == 'book_loan':
+            set_clause = ', '.join([f"{key} = %s" for key in updated_data.keys()])
+            update_query = f"UPDATE book_loan SET {set_clause} WHERE loan_id = %s"
+            update_data = list(updated_data.values()) + [primary_key]
+
+        else:
+            return jsonify({'success': False, 'error': 'Invalid category provided'})
 
         update = execute_query(update_query, update_data, "update")
 
         if update:
-            return jsonify({'success': True, 'message': 'Device updated successfully'})
+            return jsonify({'success': True, 'message': f'{category.capitalize()} updated successfully'})
         else:
-            return jsonify({'success': False, 'error': 'Failed to update device'})
+            return jsonify({'success': False, 'error': f'Failed to update {category}'})
 
     except Exception as e:
         print('Exception:', str(e))
@@ -126,47 +157,50 @@ def update_device():
 def delete_device():
     try:
         data = request.get_json()
-        device_id = data.get('id')
-        category = data.get('category')
 
-        delete_query = f"DELETE FROM {category} WHERE id = %s"
-        delete_data = (device_id,)
+        category = data.get('category')
+        primary_key = data.get('id')
+
+        if not category or not primary_key:
+            return jsonify({'success': False, 'error': 'Category and primary key are required'})
+
+        if category == 'person':
+            delete_query = f"DELETE FROM person WHERE ssn = %s"
+            delete_data = (primary_key,)
+
+        elif category == 'library_member':
+            delete_query = f"DELETE FROM library_member WHERE member_id = %s"
+            delete_data = (primary_key,)
+
+        elif category == 'subject_area':
+            delete_query = f"DELETE FROM subject_area WHERE subject_name = %s"
+            delete_data = (primary_key,)
+
+        elif category == 'book':
+            delete_query = f"DELETE FROM book WHERE isbn = %s"
+            delete_data = (primary_key,)
+
+        elif category == 'volume':
+            delete_query = f"DELETE FROM volume WHERE barcode_number = %s"
+            delete_data = (primary_key,)
+
+        elif category == 'book_loan':
+            delete_query = f"DELETE FROM book_loan WHERE loan_id = %s"
+            delete_data = (primary_key,)
+
+        else:
+            return jsonify({'success': False, 'error': 'Invalid category provided'})
 
         delete = execute_query(delete_query, delete_data, "delete")
 
         if delete:
-            return jsonify({'success': True, 'message': 'Device deleted successfully'})
+            return jsonify({'success': True, 'message': f'{category.capitalize()} deleted successfully'})
         else:
-            return jsonify({'success': False, 'error': 'Failed to delete device'})
+            return jsonify({'success': False, 'error': f'Failed to delete {category}'})
 
     except Exception as e:
         print('Exception:', str(e))
         return jsonify({'success': False, 'error': 'Invalid data format'})
-
-
-@main_routes.route('/move_to_stock', methods=['POST'])
-def move_to_stock():
-    try:
-        data = request.get_json()
-
-        device_info = data.get('deviceInfo', {})
-
-        snid = device_info.get('SNID')
-        model = device_info.get('Model')
-
-        insert_query = "INSERT INTO stock (SNID, MODEL) VALUES (%s, %s)"
-        insert_data = (snid, model)
-
-        success = execute_query(insert_query, insert_data, operation="insert")
-
-        if success:
-            return jsonify({'success': True, 'message': 'Device moved to stock successfully'})
-        else:
-            return jsonify({'success': False, 'error': 'Failed to move device to stock'})
-
-    except Exception as e:
-        print('Exception:', str(e))
-        return jsonify({'success': False, 'error': 'Failed to move device to stock'})
 
 
 @main_routes.route('/report/<category>')
