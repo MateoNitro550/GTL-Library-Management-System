@@ -4,18 +4,30 @@ body {
   overflow: hidden;
 }
 
-.ribbon {
-  align-items: center;
-  background-color: #FFFFFF;
-  border-bottom: 1px solid #8C8C8C;
-  display: flex;
-  height: 100px;
-  padding: 0px 40px;
+.logo-container {
+  position: absolute;
+  top: 0;
+  left: 40px;
+  z-index: 10;
+  background-color: white;
+  border-radius: 0 0 10px 10px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.ribbon img {
-  width: 350px;
-  height: auto;
+.logo-container img {
+  height: 80px;
+  width: auto;
+}
+
+.ribbon {
+  background-color: #C7B471;
+  height: 100px;
+  padding-left: 200px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .message-container {

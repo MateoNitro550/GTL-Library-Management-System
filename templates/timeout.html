@@ -5,9 +5,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/timeout.css') }}">
 </head>
 <body>
-  <div class="ribbon">
-    <img src="{{ url_for('static', filename='img/logo-full.svg') }}" alt="Logo">
+  <div class="logo-container">
+    <img src="{{ url_for('static', filename='img/logo-full.png') }}" alt="Logo">
   </div>
+
+  <div class="ribbon"></div>
 
   <div class="message-container">
     <p class="session-timeout">Your session has timed out.</p>

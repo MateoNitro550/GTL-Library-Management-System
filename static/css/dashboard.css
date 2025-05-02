@@ -30,21 +30,6 @@ body {
   width: 40px;
 }
 
-/* Report Button Styles */
-#reportButton {
-  background-color: #FFFFFF;
-  border: 1px solid #FFFFFF;
-  color: #007DB3;
-  cursor: pointer;
-  font-size: 20px;
-  height: 100px;
-  padding: 0px 10px;
-}
-
-#reportButton:hover {
-  background-color: #EDEDED;
-}
-
 /* Manage Users Button Styles */
 #manageUsersButton {
   background-color: #FFFFFF;
@@ -52,6 +37,7 @@ body {
   color: #C7B471;
   cursor: pointer;
   font-size: 20px;
+  height: 100px;
   padding: 0px 10px;
   text-decoration: none;
 }

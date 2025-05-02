@@ -75,6 +75,7 @@ body {
   color: #C7B471;
   cursor: pointer;
   font-size: 20px;
+  height: 100px;
   padding: 0px 10px;
   text-decoration: none;
 }
