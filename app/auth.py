@@ -23,7 +23,6 @@ def login():
             stored_username, stored_password, role = user_data[0]
 
         if input_username == stored_username and sha256_crypt.verify(input_password, stored_password):
-            print(input_username, stored_username, input_password, stored_password)
             # Store the user's role in the session
             session['role'] = role
             session['logged_in'] = True

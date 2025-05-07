@@ -75,11 +75,9 @@ def add_device():
 
         columns, _ = get_category_data(currentCategory)
 
-        valid_columns = columns
+        values = [request.form.get(column) for column in columns]
 
-        values = [request.form.get(column) for column in valid_columns]
-
-        insert_query = f"INSERT INTO {currentCategory} ({', '.join(valid_columns)}) VALUES ({', '.join(['%s'] * len(valid_columns))})"
+        insert_query = f"INSERT INTO {currentCategory} ({', '.join(columns)}) VALUES ({', '.join(['%s'] * len(columns))})"
 
         insert = execute_query(insert_query, values, operation="insert")
 
